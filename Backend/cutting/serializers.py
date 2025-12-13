@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Cutting, Size, Material, Color, WorkTable, Reference
+from .models import Cutting, Size, Material, Color, WorkTable, Reference, WorkShop, CuttingAssignment
 
 
 class CuttingSerializer(serializers.ModelSerializer):
@@ -35,4 +35,16 @@ class WorkTableSerializer(serializers.ModelSerializer):
 class ReferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reference
+        fields = '__all__'
+
+
+class WorkShopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkShop
+        fields = '__all__'
+
+
+class CuttingAssignmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CuttingAssignment
         fields = '__all__'
