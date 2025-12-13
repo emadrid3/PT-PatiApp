@@ -2,28 +2,28 @@
     import { onMounted, ref } from 'vue'
     import BaseCard from './BaseCard.vue'
     import {
-      getReferences,
-      createReference,
-      deleteReference
-    } from '../api/references.api.js'
+      getMaterials,
+      createMaterials,
+      deleteMaterials
+    } from '../api/materials.api.js'
     
     
     /**
-     * References CRUD mock component.
+     * materials CRUD mock component.
      */
     
-    const referencesName = ref('')
-    const references = ref([])
+    const materialsName = ref('')
+    const materials = ref([])
     const loading = ref(false)
 
 
-    const fetchReferences = async () => {
+    const fetchmaterials = async () => {
       loading.value = true
       try {
-        const response = await getReferences()
-        references.value = response.data
+        const response = await getMaterials()
+        materials.value = response.data
       } catch (error) {
-        console.error('Error loading references', error)
+        console.error('Error loading materials', error)
       } finally {
         loading.value = false
       }
@@ -32,13 +32,13 @@
     /**
      * Create new reference (POST)
      */
-    const addReferences = async () => {
-      if (!referencesName.value) return
+    const addmaterials = async () => {
+      if (!materialsName.value) return
     
       try {
-        await createReference({ name: referencesName.value })
-        referencesName.value = ''
-        fetchReferences()
+        await createMaterials({ name: materialsName.value })
+        materialsName.value = ''
+        fetchmaterials()
       } catch (error) {
         console.error('Error creating reference', error)
       }
@@ -46,39 +46,39 @@
 
     const removeReference = async (id) => {
       try {
-        await deleteReference(id)
-        fetchReferences()
+        await deleteMaterials(id)
+        fetchmaterials()
       } catch (error) {
         console.error('Error deleting reference', error)
       }
     }
 
     onMounted(() => {
-        fetchReferences()
+        fetchmaterials()
     })
     </script>
     
 <template>
     <BaseCard>
-    <h2>⚡ References Management</h2>
+    <h2>⚡ Materials Management</h2>
 
     <div style="display:flex; gap:1rem; margin-top:1rem">
         <input
-        v-model="referencesName"
+        v-model="materialsName"
         placeholder="Reference name"
         />
-        <button class="btn-primary" @click="addReferences">
+        <button class="btn-primary" @click="addmaterials">
         +
         </button>
     </div>
     </BaseCard>
 
     <BaseCard>
-    <h3>References List ({{ references.length }})</h3>
+    <h3>Materials List ({{ materials.length }})</h3>
 
     <ul style="list-style:none; padding:0; margin-top:1rem">
         <li
-        v-for="w in references"
+        v-for="w in materials"
         :key="w.id"
         style="display:flex; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid #eee"
         >

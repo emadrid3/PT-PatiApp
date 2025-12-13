@@ -4,7 +4,10 @@
   import WorkshopManager from './components/WorkshopManager.vue'
   import ReferenceManager from './components/ReferencesMaganer.vue'
   import ColorManager from './components/ColorsManager.vue'
-  
+  import MaterialsManager from './components/MaterialsManager.vue'
+  import SizesMagener from './components/SizesMagener.vue'
+  import WorkshopAssignment from './components/WorkshopAssignment.vue'
+
   /**
    * Root component
    */
@@ -26,6 +29,9 @@
         <WorkshopManager v-if="selectedSection === 'Workshops'" />
         <ReferenceManager v-if="selectedSection === 'References'" />
         <ColorManager v-if="selectedSection === 'Colors'" />
+        <MaterialsManager v-if="selectedSection === 'Materials'" />
+        <SizesMagener v-if="selectedSection === 'Sizes'" />
+        <WorkshopAssignment v-if="selectedSection === 'Workshop Assignment'" />
       </div>
     </div>
   </template>
