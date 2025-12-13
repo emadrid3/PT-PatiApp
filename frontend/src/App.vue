@@ -2,6 +2,8 @@
   import { ref } from 'vue'
   import SectionSelector from './components/SectionSelector.vue'
   import WorkshopManager from './components/WorkshopManager.vue'
+  import ReferenceManager from './components/ReferencesMaganer.vue'
+  import ColorManager from './components/ColorsManager.vue'
   
   /**
    * Root component
@@ -22,11 +24,8 @@
   
       <div style="margin-top:2rem">
         <WorkshopManager v-if="selectedSection === 'Workshops'" />
-  
-        <!-- Future components -->
-        <!-- <ReferenceManager /> -->
-        <!-- <ColorManager /> -->
-        <!-- <BatchManager /> -->
+        <ReferenceManager v-if="selectedSection === 'References'" />
+        <ColorManager v-if="selectedSection === 'Colors'" />
       </div>
     </div>
   </template>

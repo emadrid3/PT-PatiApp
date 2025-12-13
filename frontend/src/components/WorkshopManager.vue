@@ -1,31 +1,54 @@
 <script setup>
-    import { ref } from 'vue'
+    import { ref, onMounted } from 'vue'
     import BaseCard from './BaseCard.vue'
+    import {
+      getWorkshops,
+      createWorkshop,
+      deleteWorkshop
+    } from '../api/workshops.api'
     
     /**
-     * Workshop CRUD mock component.
+     * Workshop CRUD connected to Django REST API
      */
     
     const workshopName = ref('')
-    const workshops = ref([
-      { id: 1, name: 'Taller Textil del Sol' },
-      { id: 2, name: 'Costuras Rápidas' }
-    ])
+    const workshops = ref([])
+    const loading = ref(false)
     
-    const addWorkshop = () => {
+    const fetchWorkshops = async () => {
+      loading.value = true
+      try {
+        const response = await getWorkshops()
+        workshops.value = response.data
+      } catch (error) {
+        console.error('Error loading workshops', error)
+      } finally {
+        loading.value = false
+      }
+    }
+    
+    const addWorkshop = async () => {
       if (!workshopName.value) return
     
-      workshops.value.push({
-        id: Date.now(),
-        name: workshopName.value
-      })
-    
-      workshopName.value = ''
+      try {
+        await createWorkshop({ name: workshopName.value })
+        workshopName.value = ''
+        fetchWorkshops()
+      } catch (error) {
+        console.error('Error creating workshop', error)
+      }
     }
     
-    const removeWorkshop = (id) => {
-      workshops.value = workshops.value.filter(w => w.id !== id)
+    const removeWorkshop = async (id) => {
+      try {
+        await deleteWorkshop(id)
+        fetchWorkshops()
+      } catch (error) {
+        console.error('Error deleting workshop', error)
+      }
     }
+    
+    onMounted(fetchWorkshops)
     </script>
     
     <template>
@@ -44,15 +67,19 @@
       </BaseCard>
     
       <BaseCard>
-        <h3>Workshop List ({{ workshops.length }})</h3>
+        <h3>Workshop List</h3>
     
-        <ul style="list-style:none; padding:0; margin-top:1rem">
+        <p v-if="loading">Loading...</p>
+    
+        <ul v-else style="list-style:none; padding:0; margin-top:1rem">
           <li
             v-for="w in workshops"
             :key="w.id"
             style="display:flex; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid #eee"
           >
-            <span><strong>ID-{{ w.id }}</strong> — {{ w.name }}</span>
+            <span>
+              <strong>ID-{{ w.id }}</strong> — {{ w.name }}
+            </span>
     
             <button class="btn-danger" @click="removeWorkshop(w.id)">
               🗑

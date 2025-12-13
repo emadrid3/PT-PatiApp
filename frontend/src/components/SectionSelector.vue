@@ -19,7 +19,6 @@
       'Colors',
       'Materials',
       'Sizes',
-      'Job Batches',
       'Workshop Assignment'
     ]
     </script>
