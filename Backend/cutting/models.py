@@ -67,6 +67,7 @@ class Cutting(models.Model):
             f"Ref: {self.reference} ({self.quantity_by_reference}) | "
             f"Color: {self.color or 'N/A'} ({self.quantity_by_color}) | "
             f"Material: {self.material or 'N/A'} | "
+            f"Quantity: {self.quantity_by_size} | "
             f"Talla: {self.size or 'N/A'} ({self.quantity_by_size})"
         )
 # ------------------ Submodels ------------------ #
