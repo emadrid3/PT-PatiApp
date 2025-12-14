@@ -9,7 +9,7 @@
     
     
     /**
-     * Size CRUD mock component.
+     * Size CRUD component.
      */
     
     const sizesName = ref('')

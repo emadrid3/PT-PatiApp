@@ -11,7 +11,7 @@
     import { createCuttings, getCuttings } from '../api/cuttings.api.js'
     
     /**
-     * Workshop Assignment / Job Batch Creation
+     * Workshop Assignment / Job Workshop Creation
      */
     
     const loading = ref(false)
@@ -19,14 +19,16 @@
     
     // Form state
     const form = ref({
-      name: '',
-      quantity: '',
-      workshop: '',
+      work_table: '',
+      cut_date: '',
+      quantity_by_reference: '',
+      quantity_by_color: '',
+      quantity_by_size: '',
       reference: '',
       color: '',
       material: '',
       size: '',
-      notes: ''
+      additional_information: ''
     })
     
     // Select options
@@ -62,7 +64,7 @@
     }
     
     /**
-     * Fetch existing job batches
+     * Fetch existing job workshop
      */
     const fetchJobBatches = async () => {
       const response = await getCuttings()
@@ -70,36 +72,40 @@
     }
     
     /**
-     * Create job batch
+     * Create job Workshop
      */
     const submit = async () => {
       loading.value = true
       try {
         await createCuttings({
-          name: form.value.name,
-          quantity: form.value.quantity,
-          workshop: form.value.workshop,
+          cut_date: form.value.cut_date,
+          work_table: form.value.work_table,
+          quantity_by_reference: form.value.quantity_by_reference,
+          quantity_by_color: form.value.quantity_by_color,
+          quantity_by_size: form.value.quantity_by_size,
           reference: form.value.reference,
           color: form.value.color,
           material: form.value.material,
           size: form.value.size,
-          notes: form.value.notes
+          additional_information: form.value.additional_information
         })
     
         form.value = {
-          name: '',
-          quantity: '',
-          workshop: '',
+          cut_date: '',
+          work_table: '',
+          quantity_by_color: '',
+          quantity_by_reference: '',
+          quantity_by_size: '', 
           reference: '',
           color: '',
           material: '',
           size: '',
-          notes: ''
+          additional_information: ''
         }
     
         fetchJobBatches()
       } catch (error) {
-        console.error('Error creating job batch', error)
+        console.error('Error creating job Workshop', error)
       } finally {
         loading.value = false
       }
@@ -113,29 +119,25 @@
     
     <template>
       <BaseCard>
-        <h2>📦 Job Batch Creation</h2>
+        <h2>📦 Worshop Assignment</h2>
     
         <div class="grid">
-          <div>
-            <label>Batch Name *</label>
-            <input v-model="form.name" />
-          </div>
-    
-          <div>
-            <label>Quantity *</label>
-            <input type="number" v-model="form.quantity" />
-          </div>
-    
-          <div>
+         <div>
             <label>Assigned Workshop *</label>
-            <select v-model="form.workshop">
-              <option value="">Select workshop</option>
-              <option v-for="w in workshops" :key="w.id" :value="w.id">
+            <select v-model="form.work_table">
+                <option value="">Select Work Table</option>
+                <option v-for="w in workshops" :key="w.id" :value="w.id">
                 {{ w.name }}
-              </option>
+                </option>
             </select>
+          </div>   
+
+          <div>
+            <label>Cut Date *</label>
+            <input type="date" v-model="form.cut_date" />
           </div>
-    
+
+
           <div>
             <label>Reference *</label>
             <select v-model="form.reference">
@@ -145,7 +147,12 @@
               </option>
             </select>
           </div>
-    
+
+          <div>
+            <label>Quantity by Reference</label>
+            <input type="number" v-model="form.quantity_by_reference" />
+          </div>
+
           <div>
             <label>Color *</label>
             <select v-model="form.color">
@@ -154,6 +161,26 @@
                 {{ c.name }}
               </option>
             </select>
+          </div>
+
+          <div>
+            <label>Quantity by Color</label>
+            <input type="number" v-model="form.quantity_by_color" />
+          </div>
+
+          <div>
+            <label>Size *</label>
+            <select v-model="form.size">
+              <option value="">Select size</option>
+              <option v-for="s in sizes" :key="s.id" :value="s.id">
+                {{ s.name }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label>Quantity by Size</label>
+            <input type="number" v-model="form.quantity_by_size" />
           </div>
     
           <div>
@@ -166,80 +193,164 @@
             </select>
           </div>
     
-          <div>
-            <label>Size *</label>
-            <select v-model="form.size">
-              <option value="">Select size</option>
-              <option v-for="s in sizes" :key="s.id" :value="s.id">
-                {{ s.name }}
-              </option>
-            </select>
-          </div>
-    
           <div class="full">
             <label>Additional Information</label>
-            <textarea v-model="form.notes" rows="3"></textarea>
+            <textarea v-model="form.additional_information" rows="3"></textarea>
           </div>
         </div>
+        
     
         <button class="btn-success" @click="submit" :disabled="loading">
-          + Create New Job Batch
+          Add Workshop Assignment
         </button>
       </BaseCard>
     
       <BaseCard>
-        <h3>Created Job Batches ({{ cuttings.length }})</h3>
-    
-        <table v-if="cuttings.length">
-          <thead>
+        <h3>Created Job workshop ({{ cuttings.length }})</h3>
+        <table v-if="cuttings.length" class="styled-table">
+        <thead>
             <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Qty</th>
-              <th>Workshop</th>
-              <th>Ref</th>
-              <th>Color</th>
-              <th>Material</th>
-              <th>Size</th>
+            <th>ID</th>
+            <th>FECHA</th>
+            <th>CANT.</th>
+            <th>TALLER PRED.</th>
+            <th>REF.</th>
+            <th>COLOR</th>
+            <th>CANT. COLOR</th>
+            <th>MATERIAL</th>
+            <th>TALLA</th>
+            <th>CANT. TALLA</th>
             </tr>
-          </thead>
-          <tbody>
+        </thead>
+
+        <tbody>
             <tr v-for="b in cuttings" :key="b.id">
-              <td>{{ b.id }}</td>
-              <td>{{ b.name }}</td>
-              <td>{{ b.quantity }}</td>
-              <td>{{ b.workshop_name }}</td>
-              <td>{{ b.reference_name }}</td>
-              <td>{{ b.color_name }}</td>
-              <td>{{ b.material_name }}</td>
-              <td>{{ b.size_name }}</td>
+            <td>{{ b.id }}</td>
+            <td>{{ b.cut_date }}</td>
+            <td>{{ b.quantity_by_reference }}</td>
+            <td>{{ b.work_table_name }}</td>
+            <td>{{ b.reference_name }}</td>
+            <td>{{ b.color_name }}</td>
+            <td>{{ b.quantity_by_color }}</td>
+            <td>{{ b.material_name }}</td>
+            <td>{{ b.size_name }}</td>
+            <td>{{ b.quantity_by_size }}</td>
             </tr>
-          </tbody>
+        </tbody>
         </table>
-    
-        <p v-else>No job batches created.</p>
-      </BaseCard>
-    </template>
-    
-    <style scoped>
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-    }
-    
-    .full {
-      grid-column: span 3;
-    }
-    
-    .btn-success {
-      margin-top: 1.5rem;
-      background: #16a34a;
-      color: white;
-      width: 100%;
-      padding: 0.9rem;
-      border-radius: 10px;
-      font-weight: 600;
-    }
-    </style>
+
+        <!-- Empty state -->
+        <div v-else class="empty-state">
+        No hay lotes creados.
+        </div>
+    </BaseCard>
+</template>
+
+<style scoped>
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.full {
+    grid-column: span 3;
+}
+
+.btn-success {
+    margin-top: 1.5rem;
+    background: #16a34a;
+    color: white;
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+    .styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.styled-table thead {
+  background: #f8fafc;
+}
+
+.styled-table th {
+  padding: 14px 12px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.styled-table td {
+  padding: 14px 12px;
+  font-size: 14px;
+  color: #374151;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.styled-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* Styles for the text field container */
+.form-group.full {
+    grid-column: span 2; /* Takes up the entire column */
+    margin-bottom: 1rem; /* Adds margin at the bottom for spacing */
+}
+
+/* Styles for the label */
+label {
+    font-weight: bold; /* Makes the label text bold */
+    margin-bottom: 0.5rem; /* Adds space below the label */
+    display: block; /* Ensures the label occupies its own line */
+}
+
+/* Styles for the text area (textarea) */
+textarea {
+    width: 100%; /* Makes the text area take up the full width */
+    padding: 1rem; /* Adds padding inside the text area */
+    border-radius: 8px; /* Rounds the corners of the text area */
+    border: 1px solid #ccc; /* Sets a light gray border */
+    font-size: 1rem; /* Defines the font size */
+    font-family: Arial, sans-serif; /* Sets the font family */
+    resize: vertical; /* Allows the user to resize the height of the text area */
+    box-sizing: border-box; /* Ensures padding is included in the width and height */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Adds smooth transitions for border and shadow changes */
+}
+
+/* Styles when the text area is focused (focus state) */
+textarea:focus {
+    border-color: #4CAF50; /* Changes the border color to green when focused */
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5); /* Adds a green glow around the text area */
+    outline: none; /* Removes the default focus outline */
+}
+
+/* Placeholder styles */
+textarea::placeholder {
+    color: #999; /* Sets the placeholder text color to light gray */
+    font-style: italic; /* Makes the placeholder text italic */
+}
+
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+  color: #6b7280;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+</style>
     

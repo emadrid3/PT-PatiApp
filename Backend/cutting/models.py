@@ -52,6 +52,9 @@ class Cutting(models.Model):
         verbose_name="Cantidad por talla"
     )
 
+    additional_information = models.TextField(
+        blank=True, null=True, verbose_name="Información adicional")
+
     class Meta:
         verbose_name = "Corte"
         verbose_name_plural = "Cortes"

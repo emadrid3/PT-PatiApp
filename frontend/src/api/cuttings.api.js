@@ -6,13 +6,13 @@ import api from './axios'
  */
 
 export const getCuttings = () => {
-    return api.get('materials/')
+    return api.get('cuttings/')
 }
 
 export const createCuttings = (data) => {
-    return api.post('materials/', data)
+    return api.post('cuttings/', data)
 }
 
 export const deleteCuttings = (id) => {
-    return api.delete(`materials/${id}/`)
+    return api.delete(`cuttings/${id}/`)
 }

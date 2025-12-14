@@ -3,6 +3,31 @@ from .models import Cutting, Size, Material, Color, WorkTable, Reference, WorkSh
 
 
 class CuttingSerializer(serializers.ModelSerializer):
+    work_table_name = serializers.CharField(
+        source='work_table.name',
+        read_only=True
+    )
+
+    reference_name = serializers.CharField(
+        source='reference.name',
+        read_only=True
+    )
+
+    color_name = serializers.CharField(
+        source='color.name',
+        read_only=True
+    )
+
+    material_name = serializers.CharField(
+        source='material.name',
+        read_only=True
+    )
+
+    size_name = serializers.CharField(
+        source='size.name',
+        read_only=True
+    )
+
     class Meta:
         model = Cutting
         fields = '__all__'  # Serialize all fields of the Cutting model
