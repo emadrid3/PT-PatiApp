@@ -5,10 +5,10 @@ from django.utils import timezone
 
 
 class Cutting(models.Model):
-    work_table = models.ForeignKey(
-        "WorkTable", on_delete=models.CASCADE, related_name="cuts")
+    # work_table = models.ForeignKey(
+    #     "WorkTable", on_delete=models.CASCADE, related_name="cuts")
 
-    cut_date = models.DateField()
+    # cut_date = models.DateField()
 
     reference = models.ForeignKey(
         "Reference",
@@ -65,8 +65,8 @@ class Cutting(models.Model):
     def __str__(self):
         return (
             f"Corte #{self.id} | "
-            f"Mesa: {self.work_table} | "
-            f"Fecha: {self.cut_date} | "
+            # f"Mesa: {self.work_table} | "
+            # f"Fecha: {self.cut_date} | "
             f"Ref: {self.reference} ({self.quantity_by_reference}) | "
             f"Color: {self.color or 'N/A'} ({self.quantity_by_color}) | "
             f"Material: {self.material or 'N/A'} | "

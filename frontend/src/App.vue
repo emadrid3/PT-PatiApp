@@ -7,7 +7,7 @@
   import MaterialsManager from './components/MaterialsManager.vue'
   import SizesMagener from './components/SizesMagener.vue'
   import WorkshopAssignment from './components/WorkshopAssignment.vue'
-
+  import PendingWork from './components/PendingWork.vue'
   /**
    * Root component
    */
@@ -31,6 +31,7 @@
         <ColorManager v-if="selectedSection === 'Colors'" />
         <MaterialsManager v-if="selectedSection === 'Materials'" />
         <SizesMagener v-if="selectedSection === 'Sizes'" />
+        <PendingWork v-if="selectedSection === 'Pending work'" />
         <WorkshopAssignment v-if="selectedSection === 'Workshop Assignment'" />
       </div>
     </div>

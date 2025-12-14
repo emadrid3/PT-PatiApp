@@ -19,6 +19,7 @@
       'Colors',
       'Materials',
       'Sizes',
+      'Pending work',
       'Workshop Assignment'
     ]
     </script>
