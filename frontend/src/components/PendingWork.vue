@@ -293,41 +293,41 @@
 
 /* Styles for the text field container */
 .form-group.full {
-    grid-column: span 2; /* Takes up the entire column */
-    margin-bottom: 1rem; /* Adds margin at the bottom for spacing */
+    grid-column: span 2; 
+    margin-bottom: 1rem; 
 }
 
 /* Styles for the label */
 label {
-    font-weight: bold; /* Makes the label text bold */
-    margin-bottom: 0.5rem; /* Adds space below the label */
-    display: block; /* Ensures the label occupies its own line */
+    font-weight: bold; 
+    margin-bottom: 0.5rem; 
+    display: block; 
 }
 
 /* Styles for the text area (textarea) */
 textarea {
-    width: 100%; /* Makes the text area take up the full width */
-    padding: 1rem; /* Adds padding inside the text area */
-    border-radius: 8px; /* Rounds the corners of the text area */
-    border: 1px solid #ccc; /* Sets a light gray border */
-    font-size: 1rem; /* Defines the font size */
-    font-family: Arial, sans-serif; /* Sets the font family */
-    resize: vertical; /* Allows the user to resize the height of the text area */
-    box-sizing: border-box; /* Ensures padding is included in the width and height */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Adds smooth transitions for border and shadow changes */
+    width: 100%; 
+    padding: 1rem; 
+    border-radius: 8px; 
+    border: 1px solid #ccc; 
+    font-size: 1rem; 
+    font-family: Arial, sans-serif;
+    resize: vertical; 
+    box-sizing: border-box; 
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; 
 }
 
 /* Styles when the text area is focused (focus state) */
 textarea:focus {
-    border-color: #4CAF50; /* Changes the border color to green when focused */
-    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5); /* Adds a green glow around the text area */
-    outline: none; /* Removes the default focus outline */
+    border-color: #4CAF50; 
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5); 
+    outline: none; 
 }
 
 /* Placeholder styles */
 textarea::placeholder {
-    color: #999; /* Sets the placeholder text color to light gray */
-    font-style: italic; /* Makes the placeholder text italic */
+    color: #999; 
+    font-style: italic; 
 }
 
 
