@@ -20,7 +20,8 @@
       'Materials',
       'Sizes',
       'Pending work',
-      'Workshop Assignment'
+      'Workshop Assignment',
+      'Dashboard'
     ]
     </script>
     

@@ -73,7 +73,6 @@
         status: form.value.status,
         additional_information: form.value.additional_information
         }
-        console.log('Payload:', payload)
         await createCuttingsAssignments(payload)
 
         alert('Workshop assignment created successfully ✅')

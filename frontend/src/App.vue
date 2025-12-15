@@ -8,6 +8,8 @@
   import SizesMagener from './components/SizesMagener.vue'
   import WorkshopAssignment from './components/WorkshopAssignment.vue'
   import PendingWork from './components/PendingWork.vue'
+  import ProductionDashboard from './components/ProductionDashboard.vue'
+
   /**
    * Root component
    */
@@ -33,6 +35,7 @@
         <SizesMagener v-if="selectedSection === 'Sizes'" />
         <PendingWork v-if="selectedSection === 'Pending work'" />
         <WorkshopAssignment v-if="selectedSection === 'Workshop Assignment'" />
+        <ProductionDashboard v-if="selectedSection === 'Dashboard'" />
       </div>
     </div>
   </template>
