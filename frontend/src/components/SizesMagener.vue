@@ -60,7 +60,7 @@
     
 <template>
     <BaseCard>
-    <h2>⚡ Sizes Management</h2>
+    <h2>Sizes Management</h2>
 
     <div style="display:flex; gap:1rem; margin-top:1rem">
         <input

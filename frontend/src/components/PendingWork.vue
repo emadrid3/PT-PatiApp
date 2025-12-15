@@ -19,8 +19,6 @@
     
     // Form state
     const form = ref({
-/*       work_table: '',
-      cut_date: '', */
       quantity_by_reference: 0,
       quantity_by_color: 0,
       quantity_by_size: 0,
@@ -28,7 +26,8 @@
       color: '',
       material: '',
       size: '',
-      additional_information: ''
+      additional_information: '',
+      file: null
     })
     
     // Select options
@@ -40,11 +39,11 @@
     
     // Computed total quantity
     const quantity_by_reference = computed(() => {
-    const colorQty = Number(form.value.quantity_by_color) || 0
-    const sizeQty = Number(form.value.quantity_by_size) || 0
-
-    return colorQty + sizeQty
+      const colorQty = Number(form.value.quantity_by_color) || 0
+      const sizeQty = Number(form.value.quantity_by_size) || 0
+      return colorQty + sizeQty
     })
+    
     /**
      * Load data for selects
      */
@@ -84,22 +83,23 @@
     const submit = async () => {
       loading.value = true
       try {
-        await createCuttings({
-         /*  cut_date: form.value.cut_date,
-          work_table: form.value.work_table, */
-          quantity_by_reference: form.value.quantity_by_reference,
-          quantity_by_color: form.value.quantity_by_color,
-          quantity_by_size: form.value.quantity_by_size,
-          reference: form.value.reference,
-          color: form.value.color,
-          material: form.value.material,
-          size: form.value.size,
-          additional_information: form.value.additional_information
-        })
+        const formData = new FormData()
+        formData.append('quantity_by_reference', form.value.quantity_by_reference)
+        formData.append('quantity_by_color', form.value.quantity_by_color)
+        formData.append('quantity_by_size', form.value.quantity_by_size)
+        formData.append('reference', form.value.reference)
+        formData.append('color', form.value.color)
+        formData.append('material', form.value.material)
+        formData.append('size', form.value.size)
+        formData.append('additional_information', form.value.additional_information)
+    
+        if (form.value.file) {
+          formData.append('file', form.value.file)
+        }
+    
+        await createCuttings(formData)
     
         form.value = {
-/*           cut_date: '',
-          work_table: '', */
           quantity_by_color: '',
           quantity_by_reference: '',
           quantity_by_size: '', 
@@ -107,7 +107,8 @@
           color: '',
           material: '',
           size: '',
-          additional_information: ''
+          additional_information: '',
+          file: null
         }
     
         fetchJobBatches()
@@ -122,33 +123,21 @@
       await loadInitialData()
       await fetchJobBatches()
     })
-
+    
     watch(quantity_by_reference, (newValue) => {
-        form.value.quantity_by_reference = newValue
+      form.value.quantity_by_reference = newValue
     })
+    
+    const handleFileUpload = (event) => {
+      form.value.file = event.target.files[0]
+    }
     </script>
     
     <template>
       <BaseCard>
-        <h2>📦 Pending Work</h2>
+        <h2>Pending Work</h2>
     
         <div class="grid">
-        <!--  <div>
-            <label>Assigned Workshop *</label>
-            <select v-model="form.work_table">
-                <option value="">Select Work Table</option>
-                <option v-for="w in workshops" :key="w.id" :value="w.id">
-                {{ w.name }}
-                </option>
-            </select>
-          </div>    -->
-
-         <!--  <div>
-            <label>Cut Date *</label>
-            <input type="date" v-model="form.cut_date" />
-          </div> -->
-
-
           <div>
             <label>Reference *</label>
             <select v-model="form.reference">
@@ -158,11 +147,7 @@
               </option>
             </select>
           </div>
-
-<!--           <div>
-            <label>Quantity</label>
-            <input type="number" v-model="form.quantity_by_reference" />
-          </div> -->
+    
           <div>
             <label>Quantity</label>
             <input
@@ -172,7 +157,7 @@
                 class="readonly-input"
             />
           </div>
-
+    
           <div>
             <label>Color *</label>
             <select v-model="form.color">
@@ -182,12 +167,12 @@
               </option>
             </select>
           </div>
-
+    
           <div>
             <label>Quantity by Color *</label>
             <input type="number" v-model="form.quantity_by_color" />
           </div>
-
+    
           <div>
             <label>Size *</label>
             <select v-model="form.size">
@@ -197,7 +182,7 @@
               </option>
             </select>
           </div>
-
+    
           <div>
             <label>Quantity by Size *</label>
             <input type="number" v-model="form.quantity_by_size" />
@@ -218,7 +203,12 @@
             <textarea v-model="form.additional_information" rows="3"></textarea>
           </div>
         </div>
-        
+    
+        <!-- Excel File Upload -->
+        <div class="form-group">
+          <label for="excelFile">Upload Excel File</label>
+          <input type="file" id="excelFile" @change="handleFileUpload" accept=".xlsx, .csv" />
+        </div>
     
         <button class="btn-success" @click="submit" :disabled="loading">
           Add Pending Work
@@ -231,9 +221,7 @@
         <thead>
             <tr>
             <th>ID</th>
-<!--             <th>FECHA</th> -->
             <th>CANT.</th>
-<!--             <th>TALLER PRED.</th> -->
             <th>REF.</th>
             <th>COLOR</th>
             <th>CANT. COLOR</th>
@@ -242,13 +230,11 @@
             <th>CANT. TALLA</th>
             </tr>
         </thead>
-
+    
         <tbody>
             <tr v-for="b in cuttings" :key="b.id">
             <td>{{ b.id }}</td>
-<!--             <td>{{ b.cut_date }}</td> -->
             <td>{{ b.quantity_by_reference }}</td>
-<!--             <td>{{ b.work_table_name }}</td> -->
             <td>{{ b.reference_name }}</td>
             <td>{{ b.color_name }}</td>
             <td>{{ b.quantity_by_color }}</td>
@@ -258,126 +244,125 @@
             </tr>
         </tbody>
         </table>
-
+    
         <!-- Empty state -->
         <div v-else class="empty-state">
         No hay lotes creados.
         </div>
-    </BaseCard>
-</template>
-
-<style scoped>
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-}
-
-.full {
-    grid-column: span 3;
-}
-
-.btn-success {
-    margin-top: 1.5rem;
-    background: #16a34a;
-    color: white;
-    width: 100%;
-    padding: 0.9rem;
-    border-radius: 10px;
-    font-weight: 600;
-}
-
+      </BaseCard>
+    </template>
+    
+    <style scoped>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    
+    .full {
+      grid-column: span 3;
+    }
+    
+    .btn-success {
+      margin-top: 1.5rem;
+      background: #16a34a;
+      color: white;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    
     .styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #ffffff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.styled-table thead {
-  background: #f8fafc;
-}
-
-.styled-table th {
-  padding: 14px 12px;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 600;
-  color: #6b7280;
-  text-transform: uppercase;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.styled-table td {
-  padding: 14px 12px;
-  font-size: 14px;
-  color: #374151;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.styled-table tbody tr:hover {
-  background: #f9fafb;
-}
-
-/* Styles for the text field container */
-.form-group.full {
-    grid-column: span 2; /* Takes up the entire column */
-    margin-bottom: 1rem; /* Adds margin at the bottom for spacing */
-}
-
-/* Styles for the label */
-label {
-    font-weight: bold; /* Makes the label text bold */
-    margin-bottom: 0.5rem; /* Adds space below the label */
-    display: block; /* Ensures the label occupies its own line */
-}
-
-/* Styles for the text area (textarea) */
-textarea {
-    width: 100%; /* Makes the text area take up the full width */
-    padding: 1rem; /* Adds padding inside the text area */
-    border-radius: 8px; /* Rounds the corners of the text area */
-    border: 1px solid #ccc; /* Sets a light gray border */
-    font-size: 1rem; /* Defines the font size */
-    font-family: Arial, sans-serif; /* Sets the font family */
-    resize: vertical; /* Allows the user to resize the height of the text area */
-    box-sizing: border-box; /* Ensures padding is included in the width and height */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Adds smooth transitions for border and shadow changes */
-}
-
-/* Styles when the text area is focused (focus state) */
-textarea:focus {
-    border-color: #4CAF50; /* Changes the border color to green when focused */
-    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5); /* Adds a green glow around the text area */
-    outline: none; /* Removes the default focus outline */
-}
-
-/* Placeholder styles */
-textarea::placeholder {
-    color: #999; /* Sets the placeholder text color to light gray */
-    font-style: italic; /* Makes the placeholder text italic */
-}
-
-
-/* Empty state */
-.empty-state {
-  text-align: center;
-  padding: 2rem;
-  font-style: italic;
-  color: #6b7280;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.readonly-input {
-  background: #f8fafc;
-  cursor: not-allowed;
-  color: #374151;
-  font-weight: 600;
-}
-
-</style>
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .styled-table thead {
+      background: #f8fafc;
+    }
+    
+    .styled-table th {
+      padding: 14px 12px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .styled-table td {
+      padding: 14px 12px;
+      font-size: 14px;
+      color: #374151;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .styled-table tbody tr:hover {
+      background: #f9fafb;
+    }
+    
+    /* Styles for the text field container */
+    .form-group.full {
+      grid-column: span 2;
+      margin-bottom: 1rem;
+    }
+    
+    /* Styles for the label */
+    label {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    
+    /* Styles for the text area (textarea) */
+    textarea {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      font-family: Arial, sans-serif;
+      resize: vertical;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    /* Styles when the text area is focused (focus state) */
+    textarea:focus {
+      border-color: #4CAF50;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+      outline: none;
+    }
+    
+    /* Placeholder styles */
+    textarea::placeholder {
+      color: #999;
+      font-style: italic;
+    }
+    
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      font-style: italic;
+      color: #6b7280;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .readonly-input {
+      background: #f8fafc;
+      cursor: not-allowed;
+      color: #374151;
+      font-weight: 600;
+    }
+    
+    </style>
     

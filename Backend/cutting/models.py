@@ -5,10 +5,6 @@ from django.utils import timezone
 
 
 class Cutting(models.Model):
-    # work_table = models.ForeignKey(
-    #     "WorkTable", on_delete=models.CASCADE, related_name="cuts")
-
-    # cut_date = models.DateField()
 
     reference = models.ForeignKey(
         "Reference",
@@ -59,9 +55,6 @@ class Cutting(models.Model):
         verbose_name = "Corte"
         verbose_name_plural = "Cortes"
 
-    # def __str__(self):
-    #     return f"Corte {self.id} - {self.reference}"
-
     def __str__(self):
         return (
             f"Corte #{self.id} | "
@@ -74,7 +67,6 @@ class Cutting(models.Model):
             f"Talla: {self.size or 'N/A'} ({self.quantity_by_size})"
         )
 # ------------------ Submodels ------------------ #
-# Submodels for Cutting app
 
 
 class Size(models.Model):
@@ -140,38 +132,6 @@ class Color(models.Model):
 class WorkShop(models.Model):
     name = models.CharField(max_length=50, verbose_name="Nombre del taller")
 
-    # STATUS_CHOICES = [
-    #     ('in_process', 'En proceso'),
-    #     ('ready', 'Listo'),
-    #     ('returned', 'Devuelto'),
-    #     ('rejected', 'Rechazado'),
-    # ]
-
-    # reference = models.ForeignKey(
-    #     Reference,
-    #     on_delete=models.CASCADE,
-    #     related_name="workshop_assignments",
-    #     verbose_name="Tipo de prenda asignada",
-    #     default=1
-    # )
-
-    # quantity_assigned = models.PositiveIntegerField(
-    #     verbose_name="Cantidad asignada", default=0
-    # )
-
-    # estimated_delivery_date = models.DateField(
-    #     verbose_name="Fecha estimada de entrega",  default=timezone.now)
-
-    # status = models.CharField(
-    #     max_length=20,
-    #     choices=STATUS_CHOICES,
-    #     default='in_process',
-    #     verbose_name="Estado"
-    # )
-
-    # description = models.TextField(
-    #     blank=True, null=True, verbose_name="Descripción")
-
     class Meta:
         verbose_name = "Asignar Taller"
         verbose_name_plural = "Asignaciones de Talleres"
@@ -179,8 +139,6 @@ class WorkShop(models.Model):
 
     def __str__(self):
         return self.name
-    # def __str__(self):
-    #     return f"{self.name} - {self.reference.name} ({self.quantity_assigned})"
 
 
 class CuttingAssignment(models.Model):
@@ -264,47 +222,3 @@ class CuttingAssignment(models.Model):
             f"Size Qty: {self.quantity_by_size} | "
             f"Status: {self.status}"
         )
-    # Old Scheme for Cutting Assignment Model
-
-    # cutting = models.ForeignKey(
-    #     Cutting,
-    #     on_delete=models.CASCADE,
-    #     related_name="assignments",
-    #     verbose_name="Lote"
-    # )
-
-    # workshop = models.ForeignKey(
-    #     WorkShop,
-    #     on_delete=models.CASCADE,
-    #     related_name="assignments",
-    #     verbose_name="Taller asignado"
-    # )
-
-    # quantity_assigned = models.PositiveIntegerField(
-    #     verbose_name="Cantidad asignada")
-
-    # estimated_delivery_date = models.DateField(
-    #     verbose_name="Fecha estimada de entrega")
-
-    # status = models.CharField(
-    #     max_length=20,
-    #     choices=[
-    #         ('in_process', 'En proceso'),
-    #         ('ready', 'Listo'),
-    #         ('returned', 'Devuelto'),
-    #         ('rejected', 'Rechazado')
-    #     ],
-    #     default='in_process',
-    #     verbose_name="Estado"
-    # )
-
-    # description = models.TextField(
-    #     blank=True, null=True, verbose_name="Descripción")
-
-    # class Meta:
-    #     verbose_name = "Asignación de Corte"
-    #     verbose_name_plural = "Asignaciones de Cortes"
-    #     ordering = ["id"]
-
-    # def __str__(self):
-    #     return f"Lote {self.cutting.id} → Taller {self.workshop.name} ({self.quantity_assigned})"

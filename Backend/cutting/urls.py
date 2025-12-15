@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import CuttingViewSet, SizeViewSet, MaterialViewSet, ColorViewSet, WorkTableViewSet, ReferenceViewSet, WorkShopViewSet, CuttingAssignmentViewSet
+from .views import CuttingViewSet, SizeViewSet, MaterialViewSet, ColorViewSet, WorkTableViewSet, ReferenceViewSet, WorkShopViewSet, CuttingAssignmentViewSet, upload_excel
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -15,4 +15,6 @@ router.register(r'cutting-assignments', CuttingAssignmentViewSet,
 
 urlpatterns = [
     path('', include(router.urls)),
+    # Ruta para manejar la carga de archivo Excel
+    path('upload_excel/', upload_excel, name='upload_excel'),
 ]
