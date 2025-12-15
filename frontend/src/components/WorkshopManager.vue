@@ -53,7 +53,7 @@
     
     <template>
       <BaseCard>
-        <h2>⚡ Workshop Management</h2>
+        <h2>Workshop Management</h2>
     
         <div style="display:flex; gap:1rem; margin-top:1rem">
           <input

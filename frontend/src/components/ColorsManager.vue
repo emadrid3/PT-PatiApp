@@ -68,7 +68,7 @@
     
 <template>
     <BaseCard>
-    <h2>⚡ Color Management</h2>
+    <h2> Color Management</h2>
 
     <div style="display:flex; gap:1rem; margin-top:1rem">
         <input

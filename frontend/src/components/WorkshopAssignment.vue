@@ -138,7 +138,7 @@
     <template>
       <!-- Header -->
       <BaseCard>
-        <h2>🔧 Workshop Assignment</h2>
+        <h2>Workshop Assignment</h2>
         <p>Assign tasks to workshops here.</p>
     
         <div class="grid">
