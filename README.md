@@ -75,6 +75,8 @@ Asegúrate de tener instalados los siguientes requisitos previos:
    ```bash
    cd frontend
    npm install axios
+   npm install chart.js
+
    ```
 
 4. **Inicia el servidor de desarrollo de Vue.js:**
