@@ -19,8 +19,6 @@
     
     // Form state
     const form = ref({
-/*       work_table: '',
-      cut_date: '', */
       quantity_by_reference: 0,
       quantity_by_color: 0,
       quantity_by_size: 0,
@@ -85,8 +83,6 @@
       loading.value = true
       try {
         await createCuttings({
-         /*  cut_date: form.value.cut_date,
-          work_table: form.value.work_table, */
           quantity_by_reference: form.value.quantity_by_reference,
           quantity_by_color: form.value.quantity_by_color,
           quantity_by_size: form.value.quantity_by_size,
@@ -98,8 +94,6 @@
         })
     
         form.value = {
-/*           cut_date: '',
-          work_table: '', */
           quantity_by_color: '',
           quantity_by_reference: '',
           quantity_by_size: '', 
@@ -133,22 +127,6 @@
         <h2>📦 Pending Work</h2>
     
         <div class="grid">
-        <!--  <div>
-            <label>Assigned Workshop *</label>
-            <select v-model="form.work_table">
-                <option value="">Select Work Table</option>
-                <option v-for="w in workshops" :key="w.id" :value="w.id">
-                {{ w.name }}
-                </option>
-            </select>
-          </div>    -->
-
-         <!--  <div>
-            <label>Cut Date *</label>
-            <input type="date" v-model="form.cut_date" />
-          </div> -->
-
-
           <div>
             <label>Reference *</label>
             <select v-model="form.reference">
@@ -159,10 +137,6 @@
             </select>
           </div>
 
-<!--           <div>
-            <label>Quantity</label>
-            <input type="number" v-model="form.quantity_by_reference" />
-          </div> -->
           <div>
             <label>Quantity</label>
             <input
@@ -231,9 +205,7 @@
         <thead>
             <tr>
             <th>ID</th>
-<!--             <th>FECHA</th> -->
             <th>CANT.</th>
-<!--             <th>TALLER PRED.</th> -->
             <th>REF.</th>
             <th>COLOR</th>
             <th>CANT. COLOR</th>
@@ -246,9 +218,7 @@
         <tbody>
             <tr v-for="b in cuttings" :key="b.id">
             <td>{{ b.id }}</td>
-<!--             <td>{{ b.cut_date }}</td> -->
             <td>{{ b.quantity_by_reference }}</td>
-<!--             <td>{{ b.work_table_name }}</td> -->
             <td>{{ b.reference_name }}</td>
             <td>{{ b.color_name }}</td>
             <td>{{ b.quantity_by_color }}</td>
