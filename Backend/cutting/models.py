@@ -184,6 +184,8 @@ class WorkShop(models.Model):
 
 
 class CuttingAssignment(models.Model):
+
+    # New Schemeing for Cutting Assignment Model
     cutting = models.ForeignKey(
         Cutting,
         on_delete=models.CASCADE,
@@ -198,31 +200,111 @@ class CuttingAssignment(models.Model):
         verbose_name="Taller asignado"
     )
 
-    quantity_assigned = models.PositiveIntegerField(
-        verbose_name="Cantidad asignada")
-
-    estimated_delivery_date = models.DateField(
-        verbose_name="Fecha estimada de entrega")
-
-    status = models.CharField(
-        max_length=20,
-        choices=[
-            ('in_process', 'En proceso'),
-            ('ready', 'Listo'),
-            ('returned', 'Devuelto'),
-            ('rejected', 'Rechazado')
-        ],
-        default='in_process',
-        verbose_name="Estado"
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
     )
 
-    description = models.TextField(
-        blank=True, null=True, verbose_name="Descripción")
+    # Cutting batch
+    cutting = models.ForeignKey(
+        "Cutting",
+        on_delete=models.CASCADE,
+        related_name="assignments",
+        verbose_name="Cutting"
+    )
+
+    # Assigned quantities
+    quantity_by_color = models.PositiveIntegerField(
+        verbose_name="Assigned Quantity by Color"
+    )
+
+    quantity_by_size = models.PositiveIntegerField(
+        verbose_name="Assigned Quantity by Size"
+    )
+
+    # Assignment status
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',
+        verbose_name="Status"
+    )
+
+    # Optional notes
+    notes = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Notes"
+    )
+
+    # Timestamps
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Created at"
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Updated at"
+    )
 
     class Meta:
-        verbose_name = "Asignación de Corte"
-        verbose_name_plural = "Asignaciones de Cortes"
-        ordering = ["id"]
+        verbose_name = "Cutting Assignment"
+        verbose_name_plural = "Cutting Assignments"
+        ordering = ["-created_at"]
 
     def __str__(self):
-        return f"Lote {self.cutting.id} → Taller {self.workshop.name} ({self.quantity_assigned})"
+        return (
+            f"Assignment #{self.id} | "
+            f"Workshop: {self.work_table} | "
+            f"Cutting: {self.cutting} | "
+            f"Color Qty: {self.quantity_by_color} | "
+            f"Size Qty: {self.quantity_by_size} | "
+            f"Status: {self.status}"
+        )
+    # Old Scheme for Cutting Assignment Model
+
+    # cutting = models.ForeignKey(
+    #     Cutting,
+    #     on_delete=models.CASCADE,
+    #     related_name="assignments",
+    #     verbose_name="Lote"
+    # )
+
+    # workshop = models.ForeignKey(
+    #     WorkShop,
+    #     on_delete=models.CASCADE,
+    #     related_name="assignments",
+    #     verbose_name="Taller asignado"
+    # )
+
+    # quantity_assigned = models.PositiveIntegerField(
+    #     verbose_name="Cantidad asignada")
+
+    # estimated_delivery_date = models.DateField(
+    #     verbose_name="Fecha estimada de entrega")
+
+    # status = models.CharField(
+    #     max_length=20,
+    #     choices=[
+    #         ('in_process', 'En proceso'),
+    #         ('ready', 'Listo'),
+    #         ('returned', 'Devuelto'),
+    #         ('rejected', 'Rechazado')
+    #     ],
+    #     default='in_process',
+    #     verbose_name="Estado"
+    # )
+
+    # description = models.TextField(
+    #     blank=True, null=True, verbose_name="Descripción")
+
+    # class Meta:
+    #     verbose_name = "Asignación de Corte"
+    #     verbose_name_plural = "Asignaciones de Cortes"
+    #     ordering = ["id"]
+
+    # def __str__(self):
+    #     return f"Lote {self.cutting.id} → Taller {self.workshop.name} ({self.quantity_assigned})"
