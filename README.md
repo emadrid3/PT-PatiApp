@@ -33,6 +33,7 @@ Asegúrate de tener instalados los siguientes requisitos previos:
    pip install markdown
    pip install django-filter
    pip install django-cors-headers
+   pip install openpyxl
    ```
 
 3. **Crea el proyecto Django:**
