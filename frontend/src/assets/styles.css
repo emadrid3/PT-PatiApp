@@ -1,0 +1,72 @@
+:root {
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --danger: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.2rem;
+}
+
+h2 {
+    font-size: 1.4rem;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-bottom: 2rem;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-danger {
+    background: transparent;
+    color: var(--danger);
+    font-size: 1.1rem;
+}
